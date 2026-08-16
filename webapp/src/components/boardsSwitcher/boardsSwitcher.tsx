@@ -108,14 +108,20 @@ const BoardsSwitcher = (props: Props): JSX.Element => {
                         inverted={true}
                         className='add-board-icon'
                         icon={<AddIcon/>}
-                        title={'Add Board Dropdown'}
+                        title={intl.formatMessage({
+                            id: 'BoardsSwitcher.addBoardDropdown',
+                            defaultMessage: 'Add Board Dropdown',
+                        })}
                     />
                     <Menu>
                         <Menu.Text
                             id='create-new-board-option'
                             icon={<CompassIcon icon='plus'/>}
                             onClick={props.onBoardTemplateSelectorOpen}
-                            name='Create new board'
+                            name={intl.formatMessage({
+                                id: 'BoardsSwitcher.createNewBoard',
+                                defaultMessage: 'Create new board',
+                            })}
                         />
                         <Menu.Text
                             id='createNewCategory'

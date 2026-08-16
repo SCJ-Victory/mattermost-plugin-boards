@@ -132,7 +132,10 @@ const CardDialog = (props: Props): JSX.Element => {
                         <CompassIcon
                             icon='plus'
                         />}
-                    name='New template from card'
+                    name={intl.formatMessage({
+                        id: 'CardDialog.newTemplateFromCard',
+                        defaultMessage: 'New template from card',
+                    })}
                     onClick={makeTemplateClicked}
                 />
             </BoardPermissionGate>

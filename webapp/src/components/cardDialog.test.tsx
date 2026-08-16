@@ -7,6 +7,7 @@ import {act, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import React from 'react'
+import {IntlProvider} from 'react-intl'
 import {Provider as ReduxProvider} from 'react-redux'
 import {mocked} from 'jest-mock'
 
@@ -271,6 +272,32 @@ describe('components/cardDialog', () => {
 
         // should do nothing  on cancel delete dialog
         expect(container).toMatchSnapshot()
+    })
+
+    test('uses intl text for the New template from card menu item', async () => {
+        await act(async () => {
+            render(
+                <IntlProvider locale='zh' messages={{'CardDialog.newTemplateFromCard': '从卡片创建模板'}}>
+                    <ReduxProvider store={store}>
+                        <CardDialog
+                            board={board}
+                            activeView={boardView}
+                            views={[boardView]}
+                            cards={[card]}
+                            cardId={card.id}
+                            onClose={jest.fn()}
+                            showCard={jest.fn()}
+                            readonly={false}
+                        />
+                    </ReduxProvider>
+                </IntlProvider>,
+            )
+        })
+
+        const buttonMenu = screen.getAllByRole('button', {name: 'menuwrapper'})[0]
+        userEvent.click(buttonMenu)
+        expect(screen.getByRole('button', {name: '从卡片创建模板'})).toBeInTheDocument()
+        expect(screen.queryByRole('button', {name: 'New template from card'})).not.toBeInTheDocument()
     })
 
     test('return cardDialog menu content and do a New template from card', async () => {
