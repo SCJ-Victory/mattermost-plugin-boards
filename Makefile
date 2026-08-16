@@ -104,6 +104,15 @@ templates-archive: ## Build templates archive file
 server: templates-archive
 ifneq ($(HAS_SERVER),)
 	mkdir -p server/dist;
+ifneq ($(strip $(GOOS)$(GOARCH)),)
+	@echo "Building server for GOOS=$(GOOS) GOARCH=$(GOARCH)"
+ifeq ($(MM_DEBUG),)
+	cd server && env CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) $(GO) build $(GO_BUILD_FLAGS) -trimpath -o dist/plugin-$(GOOS)-$(GOARCH);
+else
+	$(info DEBUG mode is on; to disable, unset MM_DEBUG)
+	cd server && env CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) $(GO) build $(GO_BUILD_FLAGS) -gcflags "all=-N -l" -trimpath -o dist/plugin-$(GOOS)-$(GOARCH);
+endif
+else
 ifeq ($(MM_DEBUG),)
 	cd server && env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GO) build $(GO_BUILD_FLAGS) -trimpath -o dist/plugin-linux-amd64;
 	cd server && env CGO_ENABLED=0 GOOS=linux GOARCH=arm64 $(GO) build $(GO_BUILD_FLAGS) -trimpath -o dist/plugin-linux-arm64;
@@ -112,12 +121,12 @@ ifeq ($(MM_DEBUG),)
 	cd server && env CGO_ENABLED=0 GOOS=windows GOARCH=amd64 $(GO) build $(GO_BUILD_FLAGS) -trimpath -o dist/plugin-windows-amd64.exe;
 else
 	$(info DEBUG mode is on; to disable, unset MM_DEBUG)
-
 	cd server && env CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 $(GO) build $(GO_BUILD_FLAGS) -gcflags "all=-N -l" -trimpath -o dist/plugin-darwin-amd64;
 	cd server && env CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 $(GO) build $(GO_BUILD_FLAGS) -gcflags "all=-N -l" -trimpath -o dist/plugin-darwin-arm64;
 	cd server && env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GO) build $(GO_BUILD_FLAGS) -gcflags "all=-N -l" -trimpath -o dist/plugin-linux-amd64;
 	cd server && env CGO_ENABLED=0 GOOS=linux GOARCH=arm64 $(GO) build $(GO_BUILD_FLAGS) -gcflags "all=-N -l" -trimpath -o dist/plugin-linux-arm64;
 	cd server && env CGO_ENABLED=0 GOOS=windows GOARCH=amd64 $(GO) build $(GO_BUILD_FLAGS) -gcflags "all=-N -l" -trimpath -o dist/plugin-windows-amd64.exe;
+endif
 endif
 endif
 
@@ -126,12 +135,21 @@ endif
 server-linux: templates-archive
 ifneq ($(HAS_SERVER),)
 	mkdir -p server/dist;
+ifneq ($(strip $(GOOS)$(GOARCH)),)
+	@echo "Building server for GOOS=$(GOOS) GOARCH=$(GOARCH)"
+ifeq ($(MM_DEBUG),)
+	cd server && env CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) $(GO) build $(GO_BUILD_FLAGS) -trimpath -o dist/plugin-$(GOOS)-$(GOARCH);
+else
+	$(info DEBUG mode is on; to disable, unset MM_DEBUG)
+	cd server && env CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) $(GO) build $(GO_BUILD_FLAGS) -gcflags "all=-N -l" -trimpath -o dist/plugin-$(GOOS)-$(GOARCH);
+endif
+else
 ifeq ($(MM_DEBUG),)
 	cd server && env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GO) build $(GO_BUILD_FLAGS) -trimpath -o dist/plugin-linux-amd64;
 else
 	$(info DEBUG mode is on; to disable, unset MM_DEBUG)
-
 	cd server && env CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GO) build $(GO_BUILD_FLAGS) -gcflags "all=-N -l" -trimpath -o dist/plugin-linux-amd64;
+endif
 endif
 endif
 
