@@ -62,7 +62,7 @@ export function getMessages(lang: string): {[key: string]: string} {
     case 'ko':
         return messages_ko
     }
-    return messages_en
+    return messages_zhHans
 }
 export function getCurrentLanguage(): string {
     let lang = UserSettings.language
@@ -72,7 +72,7 @@ export function getCurrentLanguage(): string {
         } else if (supportedLanguages.includes(navigator.language.split(/[-_]/)[0])) {
             lang = navigator.language.split(/[-_]/)[0]
         } else {
-            lang = 'en'
+            lang = 'zh_Hans'
         }
     }
     return lang
