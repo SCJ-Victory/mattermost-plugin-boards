@@ -253,7 +253,41 @@ const CalendarFullView = (props: Props): JSX.Element|null => {
         today: intl.formatMessage({id: 'calendar.today', defaultMessage: 'TODAY'}),
         month: intl.formatMessage({id: 'calendar.month', defaultMessage: 'Month'}),
         week: intl.formatMessage({id: 'calendar.week', defaultMessage: 'Week'}),
-    }), [])
+    }), [intl])
+
+    const titleFormat = useMemo(() => (
+        (dateInfo: any) => {
+            if (!dateInfo.start || !dateInfo.end) {
+                return ''
+            }
+            const startDay = dateInfo.start.marker.getDate()
+            const endDay = dateInfo.end.marker.getDate()
+            if (endDay - startDay <= 7) {
+                return intl.formatDate(dateInfo.date.marker, {
+                    month: 'long',
+                    year: 'numeric',
+                })
+            }
+            return `${intl.formatDate(dateInfo.start.marker, {month: 'long', day: 'numeric'})} - ${intl.formatDate(dateInfo.end.marker, {month: 'long', day: 'numeric'})}`
+        }
+    ), [intl])
+
+    const dayHeaderFormat = useMemo(() => (
+        (dateInfo: any) => {
+            const thisYear = new Date().getFullYear()
+            const markerYear = dateInfo.date.marker.getFullYear()
+            if (thisYear === markerYear) {
+                return intl.formatDate(dateInfo.date.marker, {
+                    weekday: 'short',
+                    day: 'numeric',
+                    month: 'short',
+                })
+            }
+            return intl.formatDate(dateInfo.date.marker, {
+                weekday: 'short',
+            })
+        }
+    ), [intl])
 
     const dayCellContent = useCallback((args: DayCellContentArg): JSX.Element|null => {
         return (
@@ -292,6 +326,9 @@ const CalendarFullView = (props: Props): JSX.Element|null => {
                 selectable={isSelectable}
                 selectMirror={true}
                 select={onNewEvent}
+                titleFormat={titleFormat}
+                dayHeaderFormat={dayHeaderFormat}
+                firstDay={1}
             />
             {showConfirmationDialogBox && <ConfirmationDialogBox dialogBox={confirmDialogProps}/>}
         </div>

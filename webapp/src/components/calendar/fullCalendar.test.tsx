@@ -52,6 +52,32 @@ describe('components/calendar/toolbar', () => {
         jest.clearAllMocks()
     })
 
+    test('renders a visible month title and day headers', () => {
+        const {container} = render(
+            wrapIntl(
+                <ReduxProvider store={store}>
+                    <CalendarView
+                        board={board}
+                        activeView={view}
+                        cards={[card]}
+                        readonly={false}
+                        showCard={mockShow}
+                        addCard={mockAdd}
+                        initialDate={new Date(fifth)}
+                    />
+                </ReduxProvider>,
+            ),
+        )
+
+        const title = container.querySelector('.fc-toolbar-title')
+        const headers = container.querySelectorAll('.fc-col-header-cell-cushion')
+
+        expect(title).not.toBeNull()
+        expect(title?.textContent).not.toBe('')
+        expect(headers.length).toBeGreaterThan(0)
+        expect(Array.from(headers).every((header) => header.textContent?.trim().length)).toBe(true)
+    })
+
     test('return calendar, no date property', () => {
         const {container} = render(
             wrapIntl(
