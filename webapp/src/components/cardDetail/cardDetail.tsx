@@ -116,6 +116,7 @@ const CardDetail = (props: Props): JSX.Element|null => {
     const saveTitleRef = useRef<() => void>(saveTitle)
     saveTitleRef.current = saveTitle
     const intl = useIntl()
+    const untitledPlaceholder = intl.formatMessage({id: 'CardDetail.untitled', defaultMessage: 'Untitled'})
 
     const clientConfig = useAppSelector<ClientConfig>(getClientConfig)
     const newBoardsEditor = clientConfig?.featureFlags?.newBoardsEditor || false
@@ -225,7 +226,7 @@ const CardDetail = (props: Props): JSX.Element|null => {
                     ref={titleRef}
                     className='title'
                     value={title}
-                    placeholderText='Untitled'
+                    placeholderText={untitledPlaceholder}
                     onChange={(newTitle: string) => setTitle(newTitle)}
                     saveOnEsc={true}
                     onSave={saveTitle}

@@ -40,6 +40,7 @@ const ViewTitle = (props: Props) => {
     const readonly = props.readonly || !canEditBoardProperties
 
     const intl = useIntl()
+    const descriptionPlaceholder = intl.formatMessage({id: 'CardDetail.add-description', defaultMessage: 'Add a description...'})
 
     return (
         <div className='ViewTitle'>
@@ -116,7 +117,7 @@ const ViewTitle = (props: Props) => {
                 <div className='description'>
                     <MarkdownEditor
                         text={board.description}
-                        placeholderText='Add a description...'
+                        placeholderText={descriptionPlaceholder}
                         onBlur={onDescriptionBlur}
                         readonly={readonly}
                     />

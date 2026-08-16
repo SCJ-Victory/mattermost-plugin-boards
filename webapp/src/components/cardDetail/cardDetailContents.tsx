@@ -162,6 +162,7 @@ const ContentBlockWithDragAndDrop = (props: ContentBlockWithDragAndDropProps) =>
 const CardDetailContents = (props: Props) => {
     const intl = useIntl()
     const {contents, card, id} = props
+    const descriptionPlaceholder = intl.formatMessage({id: 'CardDetail.add-description', defaultMessage: 'Add a description...'})
     if (contents.length) {
         return (
             <div className='octo-content'>
@@ -191,7 +192,7 @@ const CardDetailContents = (props: Props) => {
                     <MarkdownEditor
                         id={id}
                         text=''
-                        placeholderText='Add a description...'
+                        placeholderText={descriptionPlaceholder}
                         onBlur={(text) => {
                             if (text) {
                                 addTextBlock(card, intl, text)
