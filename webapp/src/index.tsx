@@ -309,7 +309,7 @@ export default class Plugin {
             this.registry.registerProduct(
                 '/boards',
                 'product-boards',
-                intl.formatMessage({id: 'rhs-channel-boards-header.title', defaultMessage: 'Boards'}),
+                intl.formatMessage({id: 'rhs-channel-boards-header.title', defaultMessage: '板块'}),
                 '/boards',
                 MainApp,
                 HeaderComponent,
