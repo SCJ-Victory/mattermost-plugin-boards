@@ -72,7 +72,7 @@ export function getCurrentLanguage(): string {
         } else if (supportedLanguages.includes(navigator.language.split(/[-_]/)[0])) {
             lang = navigator.language.split(/[-_]/)[0]
         } else {
-            lang = 'zh_Hans'
+            lang = 'zh-cn'
         }
     }
     return lang
